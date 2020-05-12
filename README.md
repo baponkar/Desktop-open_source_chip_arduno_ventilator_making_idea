@@ -14,11 +14,14 @@
 - [x] Power Source.(One for Servo and other for Arduino)
 - [x] Computer.
 
+![GitHubLogp](hardware_setup.jpg)
+
 
 ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)<p style='color:red'>The important message : I did not have  all items as my country is in Lockdown.So I am unable to test all the staff.If you are interested to make this then you need to your own experiment and conclusion .You may find out multiple numbers of bug in this project.I don't know.</p>
 
 ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)<p style = 'color:green'> Before start this applicatio I want to inform you that I commanted bme280Result() function inside of arduino code . and I also commanted this lines inside of processing code you may  need to change this lines
-```pde  
+
+ ``` pde  
 //Due to absence of serial Data I am using this values
   pressureData[time] = random(40,40+ph);
  // pressureData[time] = map(pressure,0,40,40+ph,40);
@@ -42,7 +45,7 @@
 
  // maxPressureData[time] = random(5,15);//for testing purpose
    maxPressureData[time] = maxPressure;
-```
+
 
 =======
 >>>>>>> cea2e1c05ec401cd5413ee12fd04350a6e3bd5a1
@@ -72,7 +75,11 @@
  ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) We all know world is going through a pandemic situation due to COVID-19.This Corona virus mainly attacking on lungs and making Pnumenia of the patient. So maximum time patient need a ventilaton support .We all know that our system have only limited number ventilator in every country.This virus transmitting very fast and getting infected more and more persion in each day.The original medical ventilator has very important and complex property and it's building time and price both are high.So we need a fast and easy  building machine which also be chip from this idea we need a chip ventilator.It may help if there has no other option.I will recomend not to use in normal situation it should use in extreem situation.
 
 ## <p style = 'color:red'> 2. What is actually have in this project ?</p>
+
  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) The basic idea of the ambu bag compress VENTILATOR is to controlled compress and release of [Ambu Bag](https://images.app.goo.gl/5exEBuaQRQ4HmXZ7A).So we need a control run of a servo motor what vexactly will do this project.
+
+ * The Basic Hardware configaration : ![GitHub Logp](arduino_serial.gif)
+
 
  ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) This is not the all !  It has two mode(PC-CMV or pressure Control Mode) and (CSV-PS or Patient Controlled Mode).Which could be control by a swipe switch.
 1.  * CSV-PS : We can select this mode by placing mode switch at "0".Now we need to slect number of breath per minute by breathing Pot.Now select the minimum pressure selecting by peep pot and select the maximum pressure by pressure pot.Now motor give equal number of forward and backward rotation  which is equal to breathing number per minute.
@@ -88,9 +95,10 @@
   * <p style ='color:red'> The two BME-280 sensor measuring air flow rate and supplied tidal volume and showing on desktop application.</p>
 
 3. I attached a Buzzer .It will make sound if there arise any kind alarming situation like,low or very  high pressure,low or very temperation,low or very high humidity,motor stopage etc.
-
+* I get this serial output from arduino Serial which is using as  serial input of processing code :
+![GitHub Logp](arduino_serial.gif)
 4. Let's talk about desktop application.It is showing real time pressure,air flow rate and tidal volume data logging with graph.It is also showing some other imporatant serial data which is obtained from Arduino like breathing no,inspiration time,expiration time,temperature,humidity,runnig time etc.
-![GitHub Logo](desktop_app.gif)<p style='color:red'>
+ ![GitHub Logo](desktop_app.gif)<p style='color:red'>
 Desktop output ,Here I did not attached any sensor altough output showing some graph as I included some random value inside of Processing code to showing.</p>
 
 
@@ -112,9 +120,7 @@ Before install this application you need to install [Java](https://www.java.com/
 Download this project file which containing the source file To run desktop application If your machine is 64 bit open Terminal and type ,except '$' :
 
 ```bash
-
 $cd $HOME cd $HOME/Downloads/open_source_chip_arduno_ventilator_making_idea/processing_desktop_application_1_0/
-
 ```
 
 
