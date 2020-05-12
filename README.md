@@ -19,7 +19,26 @@
 
 ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)<p style='color:red'>The important message : I did not have  all items as my country is in Lockdown.So I am unable to test all the staff.If you are interested to make this then you need to your own experiment and conclusion .You may find out multiple numbers of bug in this project.I don't know.</p>
 
-![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)<p style = 'color:green'> Before start this applicatio I want to inform you that I commanted bme280Result() function inside of arduino code . and I also commanted this lines inside of processing code you may  need to change this lines
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)<p style = 'color:green'> Before start this applicatio I want to inform you that I commanted bme280Result() function inside of arduino code .
+```ino
+  void bme280Result(){
+  //temperature = bme.readTemperature();//reading temperature by bme280 sensor
+  //pressure = bme.readPressure();//reading pressure by bme280 sensor
+  //humidity = bme.readHumidity();//reading humidity by bme280 sensor 
+  /*cTime = millis();
+  if(cTime - pTime > test){ 
+    pTime = cTime;
+    Serial.print(temperature); 
+    Serial.print(" , "); 
+    Serial.print(pressure); 
+    Serial.print(" ,"); 
+    Serial.print(humidity);
+    Serial.print(" , "); 
+  }*/
+}
+ ```
+ 
+ and I also commanted this lines inside of processing code you may  need to change this lines
 
  ``` pde  
 //Due to absence of serial Data I am using this values
