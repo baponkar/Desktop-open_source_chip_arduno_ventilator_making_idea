@@ -22,6 +22,30 @@
 //Due to absence of serial Data I am using this values
   pressureData[time] = random(40,40+ph);
  // pressureData[time] = map(pressure,0,40,40+ph,40);
+<<<<<<< HEAD
+
+  flowData[time] = random(ph+130,2*ph+130);
+  //flowData[time] = map(flowRate,50,150,2*ph+85,ph+130);
+
+  tidalVolumeData[time] = random(ph+350,2*ph+350); //The above three showing graph and values
+  //tidalVolumeData[time] = map(tidalVolume,0,10,2*ph+350,ph+350);
+
+  //The following values printing only
+ // temperatureData[time] = random(15,45);//for testing purpose
+  temperatureData[time] = temperature;
+
+  //humidityData[time] = random(0,100);//for testing purpose
+   humidityData[time] = humidity;
+
+  //peepData[time] = random(0,15);//for testing purpose
+  peepData[time] = peep;
+
+ // maxPressureData[time] = random(5,15);//for testing purpose
+   maxPressureData[time] = maxPressure;
+```
+
+=======
+>>>>>>> cea2e1c05ec401cd5413ee12fd04350a6e3bd5a1
 
   flowData[time] = random(ph+130,2*ph+130);
   //flowData[time] = map(flowRate,50,150,2*ph+85,ph+130);
@@ -44,7 +68,7 @@
 ```
 
 
-## <p style = 'color:red'>1. Why do I made this?</p>
+## <p style = 'color:red'>1. Why did I make this?</p>
  ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) We all know world is going through a pandemic situation due to COVID-19.This Corona virus mainly attacking on lungs and making Pnumenia of the patient. So maximum time patient need a ventilaton support .We all know that our system have only limited number ventilator in every country.This virus transmitting very fast and getting infected more and more persion in each day.The original medical ventilator has very important and complex property and it's building time and price both are high.So we need a fast and easy  building machine which also be chip from this idea we need a chip ventilator.It may help if there has no other option.I will recomend not to use in normal situation it should use in extreem situation.
 
 ## <p style = 'color:red'> 2. What is actually have in this project ?</p>
