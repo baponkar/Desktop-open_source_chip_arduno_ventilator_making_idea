@@ -44,7 +44,7 @@
 ```
 
 
-## <p style = 'color:red'>1. Why do I made this?</p>
+## <p style = 'color:red'>1. Why did I make this?</p>
  ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) We all know world is going through a pandemic situation due to COVID-19.This Corona virus mainly attacking on lungs and making Pnumenia of the patient. So maximum time patient need a ventilaton support .We all know that our system have only limited number ventilator in every country.This virus transmitting very fast and getting infected more and more persion in each day.The original medical ventilator has very important and complex property and it's building time and price both are high.So we need a fast and easy  building machine which also be chip from this idea we need a chip ventilator.It may help if there has no other option.I will recomend not to use in normal situation it should use in extreem situation.
 
 ## <p style = 'color:red'> 2. What is actually have in this project ?</p>
