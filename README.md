@@ -181,7 +181,7 @@ The following steps describe how to install Oracle Java 11 on Ubuntu 18.04:
 
 * ####  Windows :
 
-Please see [this](https://java.com/en/download/help/download_options.xml) link.
+To install Java please see [this](https://java.com/en/download/help/download_options.xml) link.
 
 
   * I have used "arduino-1.8.12-linux64" IDE to write Arduino Code.
