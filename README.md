@@ -14,7 +14,7 @@
 - [x] Power Source.(One for Servo and other for Arduino)
 - [x] Computer.
 
-![GitHubLogp](hardware_setup.jpg)
+ * The Basic Hardware configaration : ![GitHub Logp](hardware_setup.jpg)
 
 
 ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)<p style='color:red'>The important message : I did not have  all items as my country is in Lockdown.So I am unable to test all the staff.If you are interested to make this then you need to your own experiment and conclusion .You may find out multiple numbers of bug in this project.I don't know.</p>
@@ -78,7 +78,7 @@
 
  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) The basic idea of the ambu bag compress VENTILATOR is to controlled compress and release of [Ambu Bag](https://images.app.goo.gl/5exEBuaQRQ4HmXZ7A).So we need a control run of a servo motor what vexactly will do this project.
 
- * The Basic Hardware configaration : ![GitHub Logp](arduino_serial.gif)
+
 
 
  ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) This is not the all !  It has two mode(PC-CMV or pressure Control Mode) and (CSV-PS or Patient Controlled Mode).Which could be control by a swipe switch.
