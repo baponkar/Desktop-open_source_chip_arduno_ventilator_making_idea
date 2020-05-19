@@ -5,7 +5,7 @@
 
 
 - [x] High torqe servo(MG-996 metal geared) -  1pc
-- [x] BME280 pressure Sensor -  3pcs
+- [x] BMP280 pressure Sensor -  3pcs
 - [x] buzzer - 1pcs
 - [x] Potentiometer(10K)(breath,peep,press,LCD Brightness Control) - 5 pcs
 - [x] Potentiometer Knob - 3pcs
@@ -24,78 +24,6 @@
 
  * The Basic Hardware configaration : ![GitHub Logp](hardware_setup.jpg)
 
-
-![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)<p style='color:red'>The important message : I did not have  all items as my country is in Lockdown.So I am unable to test all the staff.If you are interested to make this then you need to your own experiment and conclusion .You may find out multiple numbers of bug in this project.I don't know.</p>
-
-![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)<p style = 'color:green'> Before start this applicatio I want to inform you that I commanted bme280Result() function inside of arduino code .
-```ino
-  void bme280Result(){
-  //temperature = bme.readTemperature();//reading temperature by bme280 sensor
-  //pressure = bme.readPressure();//reading pressure by bme280 sensor
-  //humidity = bme.readHumidity();//reading humidity by bme280 sensor 
-  /*cTime = millis();
-  if(cTime - pTime > test){ 
-    pTime = cTime;
-    Serial.print(temperature); 
-    Serial.print(" , "); 
-    Serial.print(pressure); 
-    Serial.print(" ,"); 
-    Serial.print(humidity);
-    Serial.print(" , "); 
-  }*/
-}
- ```
- 
- and I also commanted this lines inside of processing code you may  need to change this lines
-
- ``` pde  
-//Due to absence of serial Data I am using this values
-  pressureData[time] = random(40,40+ph);
- // pressureData[time] = map(pressure,0,40,40+ph,40);
-<<<<<<< HEAD
-
-  flowData[time] = random(ph+130,2*ph+130);
-  //flowData[time] = map(flowRate,50,150,2*ph+85,ph+130);
-
-  tidalVolumeData[time] = random(ph+350,2*ph+350); //The above three showing graph and values
-  //tidalVolumeData[time] = map(tidalVolume,0,10,2*ph+350,ph+350);
-
-  //The following values printing only
- // temperatureData[time] = random(15,45);//for testing purpose
-  temperatureData[time] = temperature;
-
-  //humidityData[time] = random(0,100);//for testing purpose
-   humidityData[time] = humidity;
-
-  //peepData[time] = random(0,15);//for testing purpose
-  peepData[time] = peep;
-
- // maxPressureData[time] = random(5,15);//for testing purpose
-   maxPressureData[time] = maxPressure;
-
-
-=======
->>>>>>> cea2e1c05ec401cd5413ee12fd04350a6e3bd5a1
-
-  flowData[time] = random(ph+130,2*ph+130);
-  //flowData[time] = map(flowRate,50,150,2*ph+85,ph+130);
-
-  tidalVolumeData[time] = random(ph+350,2*ph+350); //The above three showing graph and values
-  //tidalVolumeData[time] = map(tidalVolume,0,10,2*ph+350,ph+350);
-
-  //The following values printing only
- // temperatureData[time] = random(15,45);//for testing purpose
-  temperatureData[time] = temperature;
-
-  //humidityData[time] = random(0,100);//for testing purpose
-   humidityData[time] = humidity;
-
-  //peepData[time] = random(0,15);//for testing purpose
-  peepData[time] = peep;
-
- // maxPressureData[time] = random(5,15);//for testing purpose
-   maxPressureData[time] = maxPressure;
-```
 
 
 ## <p style = 'color:red'>1. Why did I make this?</p>
