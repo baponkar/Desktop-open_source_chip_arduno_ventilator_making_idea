@@ -1,63 +1,172 @@
-/*----------------------------------------------------------------------------------------------------------
- *Pressere control and patient control mode code for Arduino Uno.
+
+/**************************************************************************************************************
+********************Arduino Ventilator Circuit's Code************************************************************
+ * ----------------------------------------------------------------------------------------------------------
+ * 
+ * Pressere control and patient control mode code for Arduino Uno.
  * Due to lack of Ventilator in this current situation due to COVID-19 pandemic it may help to people.
  * This instrument could only use in last .This istrument not suggest to use first as the medical ventilator
- * contai g much more sensor and property.
- * This code is  not included tidal flow rate calculation.I am working on it.
- * Components : High torqe servo(MG-996 metal geared),BME280 pressure Sensor,buzzer,Potentiometer(10K)
- *              (breath,peep,press),Swipe Button,Jumping Wires.
+ * containg much more sensor and property.The basic principle of this simple ventilator is pressure control
+ * of a ambu bag by a rotating actuator attached on a servo motor. It has Pressure Control and patient Controll mode .In this project IT
+ * can measure breathing number,peep,pressure,temperature,humidity,flow rate,tidal volume.The values are showing in 
+ * LCD display as well as PC serial monitor.
+ * 
+ * Components : 
+ *              1. High torqe servo(Water proof high torque metal geared servo motor) - 1pc
+ *              2. BMP280 pressure Sensor - 3pcs
+ *              3. buzzer - 1pcs
+ *              4. Potentiometer(10K)(breath,peep,press,LCD Brightness Control) - 5 pcs
+ *              5. Swipe Button - 1pc
+ *              6. Jumping Wires.
+ *              7. Resistor(560 Ohoms, 100 Ohom)
+ *              8. 16X4 LCD Display - 1pc
+ *              9. Sensor shield v-5 - 1pc
+ *              10.Servo Bracket -1pc
+ *              11.Arduino UNO R3 - 1pc
+ *              12.Actuator -1pc
+ *              13.Ambu Bag - 1pc
+ *              14.Breathing Circuit
+ *              15. Aeduino program loading data cable. - 1 pc
+ *              
+ *             # In this Circuit I am using two BME280 Pressure Sensor to using rate of air flow and
+ *              other one BME280 is using for measuring pressure,temperature and Humidity.The other two BME280 Sensor
+ *              to measure the flow rate and tidal volume.
+ *              To connect three BME280 Sensor in a single Arduino Board SPI Hardware connection.
+ *              LCD 16x4 Display
+ *              
  * Connection :
- *             
+ * 
+ *   
  *---------------------------------Analog Pins-------------------------------------------------------------------           
- *             BME280 : SCL--> D17,SDA-->16,Vin-->5V,GND-->GND.
+ *            
  *             Breath Pot(10K) : Midddile Pin --> A0, +Ve, -Ve.
  *             Pressure Control Pot(10K) : Middle Pin --> A1,+Ve,-Ve.
  *             PEEP Pot(10K)   : Middle Pin --> A2,+Ve,-Ve.
  *             
  *-------------------------------------Digital Pins--------------------------------------------------------------
- *             Green LED : --> D3. Showing inspiration
  *             Buzzer : +Ve--> D4. through 100 Ohom resistance,-Ve-->GND.
- *             Yellow LED : --> D5. Showing Expiration.
  *             Mode Swipe Button : --> D7.
  *             Servo : Yellow --> D9, Red--> +6V ,Black--> GND.(External Source)
- *             Alarm Red LED : --> D6. Showing alarming Situation.
+ *             [Water proof High Torque Digital Servo motor with metal Gears]
+ *             *servo operating voltage : 6-8.4 volt
+ *             *Required Pulse : 3-5 Volt peak to peak square wave
+ *             *15.5 kg/cm to 17kg/cm torque
  *             
- *             Note ---> I am disable the bme280 sensor in this code.
+ *             #Servo should powered have different power source 
  *             
- *  Version - v-4.0
+ *             
+ *-------------------------------|LCD DISPLAY Connection|--------------------------------------------------------
+ *             
+ *             VSS --> GND
+ *             VDD/VCC --> +5 V
+ *             VEE --> ADJUST PIN TO CONNECT 10K POT
+ *             RS PIN --> D12,
+ *             RW PIN -- GND
+ *             E PIN --> D11,
+ *             DB4 PIN --> D8,
+ *             DB5 PIN --> D2,
+ *             DB6 PIN --> D1,
+ *             DB7 PIN --> D0,
+ *             LED+ --> EITHER CONNECT TO 3.3V OR CONNECT 5V THROUGH 560 OHM
+ *             LED- --> GND
+ *     
+ *             
+ *             
+ *             
+ *------------------------------BMP-280 Sensor Connections-------------------------------------------------------
+ *             Connect the VCC pin from all three sensors to either the 5 V or the 3.3 V output from your Arduino.
+ *             Connect the GND pin from all three sensors to the GND on the Arduino. 
+ *             Connect the SDA/SDI pin from all three sensors to the MOSI pin on the ICSP header from the Arduino.
+ *             Connect the SCL/SCK pin from all three sensors to the SCK pin on the ICSP header from the Arduino.
+ *             Connect the SDO pin from all three sensors to the MISO pin on the ICSP header from the Arduino.
+ *             Conect first Sensor CSB pin to D3,Connect second sensor's CSB to D5,Connect third sensor's CSB Pin to 6.
+ *              
+ *              The ICSP Header looks like this:
+ *                ICSP 
+ *            MISO |x  x| VCC
+ *             SCK |x  x| MOSI
+ *           RESET |x  x| GND
+ *             
+ *---------------------------------------------------------------------------------------------------------------
+ *             
+ *             # Used Digital pins ==>   RX0,TX1,INT2,3,4,5,6,7,8,9,11,12  [MOSI11,MISO12]
+ *             # Unused Digital Pins ==> SS10, SCK13      
+ *             # Used Analog Pins ==>    A0, A1, A2
+ *             # Unused Analog Pins ==>  A3, A4 ,A5
+ *             
+ *             
+ *  Used Library : <Wire.h>,<LiquidCrystal.h>,<Servo.h>,<avr/wdt.h>,<BlueDot_BME280.h>,<BMP280_DEV>.......
+ *  Download Link : 1) <avr/wdt.h>  http://www.nongnu.org/avr-libc/user-manual/group__avr__watchdog.html
+ *                  2) <BlueDot_BME280>  https://www.bluedot.space/tutorials/connect-multiple-bme280-on-spi/
+ *                  3) Other library could supplied by arduino IDE manage library section
+ *                  4) https://github.com/MartinL1/BMP280_DEV
+ *  Version - v-5.0
  *  Writter - Bapon Kar           
  *  Contact - baponkar600@gmail.com
- *  Last Update Time - 03/05/2020 ; 01:03:01 PM.
+ *  Last Update Time - 19/05/2020 ; 09:32:01 PM.
  *  
  * ---------------------------------------------------------------------------------------------------------
  */
+
+#include<Wire.h>
 long cTime = 0;//current time to calculate printing message
 long pTime = 0;//previous time calculate to printing serial message
 int printInterval = 100;//Printing Serial message time interval
 
-#include<stdio.h>
+
+//Settting LCD Display
+#include<LiquidCrystal.h>
+int RS_PIN = 12;
+int E_PIN = 11;
+
+int DB4_PIN = 8;
+int DB5_PIN = 2;
+int DB6_PIN = 1;
+int DB7_PIN = 0;
+LiquidCrystal lcd(RS_PIN, E_PIN, DB4_PIN, DB5_PIN, DB6_PIN, DB7_PIN);//making LiquidCrystal object
+
 #include<Servo.h>
 
-//Setting BME280 pressure sensor
-//SCL-->17 and SDA--> 16 if not working SCL-->A5 and SDA--A4
-#include <Wire.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BME280.h>
-#define SEALEVELPRESSURE_HPA (1013.25)
-Adafruit_BME280 bme;
+#include <BMP280_DEV.h> 
+
+BMP280_DEV bmp280_1(3);                            // Instantiate (create) a BMP280_DEV object and set-up for SPI operation on digital pin D10
+BMP280_DEV bmp280_2(5);                             // Instantiate (create) a BMP280_DEV object and set-up for SPI operation on digital pin D9
+BMP280_DEV bmp280_3(6);
+float temp_t, temp_p ;
+
+int bme1Detected = 0; //Checks if Sensor 1 is available
+int bme2Detected = 0; //Checks if Sensor 2 is available
+int bme3Detected = 0; //Checks if Sensor 3 is available
+
+float pressure1 = 0;
+float pressure2 =0;
+float pressure3 = 0;
+float temperature1 =0;
+float temperature2 = 0;
+float temperature3 = 0;
+
+float pressureDifference = 0;
+
+
+float rho = 1.225;       //Density of air in Kg/m3
+float area_1 = 0.000415;  //surface area in m1
+float area_2 = 0.0000283;  //surface area in m2
+float dt = 0;    //Time Difference
+float massFlow;  //in Kg/s
+float volFlow;  //in L/s
+float volume;  //in Litre
+
 int temperature = 0;
 int pressure = 0;
 int maxPressure = 0;
 int humidity = 0;
 
-// char data[10];
 //Setting alarm
-int const buzzPin = 4;//attach a buzzer in D4 pin
+int const buzzPin = 4;     //attach a buzzer in D4 pin
 boolean alarmState = 0;
-int const alarmPin = 6;//Attaching a red LED pin for showing alarming situation
 
 //Setting breathing rate
-const int breathPotPin = A0;//Attach a pot to control breathing rate per minute
+const int breathPotPin = A0;   //Attach a pot to control breathing rate per minute
 int breathPotVal;
 int breathNo;
 float breathTime;
@@ -66,34 +175,26 @@ float expTime;
 int inspSpeed,expSpeed;
 
 //peep pot setting
-int const peepPotPin = A2;//attach a 10K pot in this pin
+int const peepPotPin = A2;    //attach a 10K pot in this pin
 int peepPotVal;
 int peepVal;
 
 //Pressure Control
-const int pressContPotPin = A1;//attaching 10k pot
+const int pressContPotPin = A1;  //attaching 10k pot
 int pressPotVal;
 int pressVal;
 
-//Setting Servo
-#include <Servo.h>
-
-const int servoPin = 9;//attach yelow servo signal pin
+const int servoPin = 9;    //attach yelow servo signal pin
 int minPos ;
 int maxPos ;
 
-
 //setting mode select button 
-const int modeButtonPin = 7;//attaching a swipe button to select mode
+const int modeButtonPin = 7;  //attaching a swipe button to select mode
 boolean modeState = LOW;
 
-//Adding two led for testing purpouse
-const int greenLed = 3;
-const int yellowLed = 5;
-boolean greenLedState = LOW;
-boolean yellowLedState = LOW;
 
-class Sweeper
+
+class Sweeper //Making a servo rotation controlling class
 {
   Servo servo;
   int pos = 100;
@@ -136,26 +237,12 @@ class Sweeper
       if(increment <0 && updateInterval == 2*interval) {
          updateInterval = interval;
        }
-
-   /*Serial.print(interval);
-      Serial.print(" ,");
-      Serial.print(pos);
-      Serial.print(" ,");
-      Serial.println(updateInterval); */
    
-    
     if((currentTime - lastUpdate) > updateInterval)
     {
       lastUpdate = currentTime;
       pos += increment;
       servo.write(pos);
-     // Serial.println(pos);
-     //Serial.print(",");
-     //Serial.println(pos);
-     /*Serial.print(",");
-     Serial.print(maxDegree);
-     Serial.print(",");
-     Serial.println(minDegree);*/
            
       if((pos >= maxDegree) || (pos <= minDegree))
       {
@@ -166,136 +253,85 @@ class Sweeper
   }
 };
 
-
-class Flasher
-{
-  // Class Member Variables
-  // These are initialized at startup
-  int ledPin;      // the number of the LED pin
-  long OnTime;     // milliseconds of on-time
-  long OffTime;    // milliseconds of off-time
-
-  // These maintain the current state
-  int ledState;                 // ledState used to set the LED
-  unsigned long previousMillis;   // will store last time LED was updated
-
-  // Constructor - creates a Flasher 
-  // and initializes the member variables and state
-  public:
-  Flasher(int pin)
-  {
-  ledPin = pin;
-  pinMode(ledPin, OUTPUT);     
-    
-  
-  
-  ledState = LOW; 
-  previousMillis = 0;
-  }
-
-  void Update( long on, long off)
-  {
-    OnTime = on;
-    OffTime = off;
-    // check to see if it's time to change the state of the LED
-    unsigned long currentMillis = millis();
-     
-    if((ledState == HIGH) && (currentMillis - previousMillis >= OnTime))
-    {
-      ledState = LOW;  // Turn it off
-      previousMillis = currentMillis;  // Remember the time
-      digitalWrite(ledPin, ledState);  // Update the actual LED
-    }
-    else if ((ledState == LOW) && (currentMillis - previousMillis >= OffTime))
-    {
-      ledState = HIGH;  // turn it on
-      previousMillis = currentMillis;   // Remember the time
-      digitalWrite(ledPin, ledState);   // Update the actual LED
-    }
-  }
-};
-
-
-class Flasher1
-{
-  // Class Member Variables
-  // These are initialized at startup
-  int ledPin;      // the number of the LED pin
-  long OnTime;     // milliseconds of on-time
-  long OffTime;    // milliseconds of off-time
-
-  // These maintain the current state
-  int ledState;                 // ledState used to set the LED
-  unsigned long previousMillis;   // will store last time LED was updated
-
-  // Constructor - creates a Flasher 
-  // and initializes the member variables and state
-  public:
-  Flasher1(int pin)
-  {
-  ledPin = pin;
-  pinMode(ledPin, OUTPUT);     
-    
-  
-  
-  ledState = LOW; 
-  previousMillis = 0;
-  }
-
-  void Update( long on, long off)
-  {
-     OnTime = on;
-     OffTime = off;
-    // check to see if it's time to change the state of the LED
-    unsigned long currentMillis = millis();
-     
-    if((ledState == LOW) && (currentMillis - previousMillis >= OnTime))
-    {
-      ledState = HIGH;  // Turn it off
-      previousMillis = currentMillis;  // Remember the time
-      digitalWrite(ledPin, !ledState);  // Update the actual LED
-    }
-    else if ((ledState == HIGH) && (currentMillis - previousMillis >= OffTime))
-    {
-      ledState = LOW;  // turn it on
-      previousMillis = currentMillis;   // Remember the time
-      digitalWrite(ledPin, !ledState);   // Update the actual LED
-    }
-  }
-};
-
-Flasher flasher(greenLed);
-Flasher1 flasher1(yellowLed);
-Sweeper sweeper;
-
-
+Sweeper sweeper;        //creating a new sweeper object
 
 void setup()
-{
-  sweeper.Attach(servoPin);
+{ 
+
+  lcd.begin(16, 4);  // initializes the 16x4 LCD,first number represent column and second number represent row
+
+  lcd.setCursor(0,0);              //sets the cursor at column 0 row 0 
+  lcd.print("Breathing No : ");   // print message 
   
+  lcd.setCursor(0,1);             //sets the cursor at column 0 and row 1
+  lcd.print("Pressure : ");     //print message
+  
+  lcd.setCursor(0,2);              //sets the cursor at column 0 and row 2
+  lcd.print("Flow Rate : ");    //print message
+  
+  lcd.setCursor(0,3);             //sets the cursor at column 0 and row 3
+  lcd.print("Tidal Volume : "); //print message
+    
+  bmp280_1.begin();                                 // Default initialisation, place the BMP280 into SLEEP_MODE 
+  bmp280_1.setTimeStandby(TIME_STANDBY_05MS);     // Set the standby time to 5 milli seconds
+  bmp280_1.startNormalConversion();                 // Start BMP280 continuous conversion in NORMAL_MODE 
+  bmp280_2.begin();                                 // Default initialisation, place the BMP280 into SLEEP_MODE 
+  bmp280_2.setTimeStandby(TIME_STANDBY_05MS);     // Set the standby time to 5 milli seconds
+  bmp280_2.startNormalConversion();                 // Start BMP280 continuous conversion in NORMAL_MODE  
+  bmp280_3.begin();                                 // Default initialisation, place the BMP280 into SLEEP_MODE 
+  bmp280_3.setTimeStandby(TIME_STANDBY_05MS);     // Set the standby time to 5 milli seconds
+  bmp280_3.startNormalConversion();                 // Start BMP280 continuous conversion in NORMAL_MODE  
+  
+  
+  sweeper.Attach(servoPin);  
   pinMode(buzzPin,OUTPUT);
   pinMode(breathPotPin,INPUT);
   pinMode(peepPotPin,INPUT);
   pinMode(pressContPotPin,INPUT);
   pinMode(modeButtonPin, INPUT);
   pinMode(servoPin,OUTPUT);
-  pinMode(alarmPin,OUTPUT);
-  //pinMode(greenLed,OUTPUT);
-  //pinMode(yellowLed,OUTPUT);
   Serial.begin(115200);
 }
+
+
+void bmp280Read(){
+  if (bmp280_1.getTempPres( temp_t,  temp_p))    // Check if the measurement is complete
+  {
+    temperature1 = temp_t;
+    pressure1 = temp_p;
+     
+  }
+  if (bmp280_2.getTempPres(temp_t, temp_p))    // Check if the measurement is complete
+  {
+    temperature2 = temp_t;
+    pressure2 = temp_p;
+     
+  }
+
+   if (bmp280_3.getTempPres( temp_t,  temp_p))    // Check if the measurement is complete
+  {
+    temperature3 = temp_t;
+    pressure3 = temp_p;
+     
+  }
+}
+
+void flowRate(){
+  bmp280Read();
+  pressureDifference = 100*(pressure2 - pressure1);//if temperature2>temperature1 and changing into Pa
+  //[By using this formula dP=(by using formula (W^2)/2rho)*(1/A2^2−1/A1^2)]
+  
+  massFlow = 1000*sqrt((abs(pressureDifference)*2*rho)/((1/pow(area_2,2)))-(1/pow(area_1,2)));//mass in Kg
+  volFlow = massFlow/rho;//volume of air flow in L/s
+  volume = volFlow*dt + volume;//total volume
+  dt = 0.001;
+  delay(1);//I using this delay to find the volume flow in this time
+}
+
 
 void modeSelect(){
   modeState = digitalRead(modeButtonPin);//Digital read of mode either preesure control or patient control  
   modeState = int(modeState);
-  /*cTime = millis();
-
-  if(cTime - pTime > test){ 
-    pTime = cTime; 
-    Serial.print(modeState);
-    Serial.print(" , ");
-  }*/
 }
 
 void pressureControl(){
@@ -304,17 +340,7 @@ void pressureControl(){
   pressVal = map(pressPotVal,0,1023,50,180);//taking arbitary value
   pressVal = 120;
   //it should change in actual condition with checking bmp280 result
-  /*cTime = millis();
-
-  if(cTime - pTime > test){ 
-    pTime = cTime;
-    Serial.print(pressVal);
-    Serial.print(" , ");
-  }*/
-  
-  
 }
-
 
 void peepControl(){
   peepPotVal = analogRead(peepPotPin);
@@ -326,16 +352,7 @@ void peepControl(){
   }
   else {
     peepVal = 15;
-  } 
-  /*cTime = millis();
-
-  if(cTime - pTime > test){ 
-    pTime = cTime;
-  
-    Serial.print(peepVal);
-    Serial.print(" , ");
-  }*/
-  
+  }   
 }
 
 void breathCount(){
@@ -347,51 +364,16 @@ void breathCount(){
   expTime = 2.0*inspTime;//Expiration time in milliseconds 
   //motor rotation time for 1 degree rotation during inspiration
   expSpeed = 2.0*inspSpeed;//motor rotation time for 1 degree rotation during expiration
-  cTime = millis();
-
- /* if(cTime - pTime > test){ 
-    pTime = cTime;
-    Serial.print(breathNo); 
-    Serial.print(" , "); 
-    Serial.print(inspTime);
-    Serial.print(" , ");
-  }*/
-   
-}
-
-void bme280Result(){
-  //temperature = bme.readTemperature();//reading temperature by bme280 sensor
-  //pressure = bme.readPressure();//reading pressure by bme280 sensor
-  //humidity = bme.readHumidity();//reading humidity by bme280 sensor 
-  /*cTime = millis();
-
-  if(cTime - pTime > test){ 
-    pTime = cTime;
-    Serial.print(temperature); 
-    Serial.print(" , "); 
-    Serial.print(pressure); 
-    Serial.print(" ,"); 
-    Serial.print(humidity);
-    Serial.print(" , "); 
-  }*/
 }
 
 void alarm(){
   if((pressure < peepVal) || (pressure > maxPressure) || (breathNo < 12) || (breathNo > 28) || (breathTime > 5000) || (breathTime < 2143)){
      alarmState = HIGH;
      tone(buzzPin,1000);//Setting 1000KHz sound alarm
-     digitalWrite(alarmPin,HIGH);//ON red alarm LED
      }
   else {
     alarmState = LOW;
-    digitalWrite(alarmPin,LOW);//OFF red alarm LED
-  } /* 
-  cTime = millis();
-
-  if(cTime - pTime > test){ 
-    pTime = cTime; 
-    Serial.println(alarmState);
-  }*/
+  } 
 }
 
 void pressureControlMode(){
@@ -404,9 +386,7 @@ void pressureControlMode(){
    
   //Servo Control for inspiraton and expiration
   //Here pepVal and servo initial value is calibrae after experiment
-
-   sweeper.update(minPos,maxPos,10);
-   
+  sweeper.update(minPos,maxPos,10); 
   } 
 
 void patientControlMode(){
@@ -428,47 +408,50 @@ void patientControlMode(){
    
 }
 
-void ledControl(int tim){
-  long currentTime = millis();
-  long previousTime = 0;
-  int interval = tim;
-  if(currentTime-previousTime > tim && greenLedState == LOW){
-    greenLedState = HIGH;
-    yellowLedState = LOW;
-    previousTime += interval;
-  }
-  else {
-    greenLedState = LOW;
-    yellowLedState = HIGH;
-  }
-  digitalWrite(greenLed,greenLedState);
-  digitalWrite(yellowLed,yellowLedState);
+void lcdDisplay(){
+
+  lcd.setCursor( 2,0);
+  lcd.print(breathNo);//Printing breathing number at column 2 row 0
+
+  lcd.setCursor(2,1);
+  lcd.print(pressure);//Printing pressure value at column 2 row 1
+
+
+  lcd.setCursor(2,2);
+  lcd.print(volFlow);//Printing flowrate at column 2 row 2
+
+
+  lcd.setCursor(2,3);
+  lcd.print(volume);//Printing tidal volume at column 2 row 3
 }
 
 void printMessage() {
- cTime = millis();
-
+  cTime = millis();
   if(cTime - pTime > printInterval){ 
     pTime = cTime; 
     Serial.println("");
-    Serial.print(" , ");
-    Serial.print(modeState);
+    Serial.print(" , ");     //just omit this comma
+    Serial.print(modeState); //mode State either patient controll or pressure control
     Serial.print(" , "); 
-    Serial.print(alarmState); 
+    Serial.print(alarmState); //Alarm state
     Serial.print(" , "); 
-    Serial.print(breathNo); 
+    Serial.print(breathNo); //breathing number per minute
     Serial.print(" , "); 
-    Serial.print(inspTime); 
+    Serial.print(inspTime); //inspiratory time
     Serial.print(" , "); 
-    Serial.print(temperature); 
+    Serial.print(temperature3); //temperature
     Serial.print(" , "); 
-    Serial.print(pressure); 
+    Serial.print(pressure3); //pressure
     Serial.print(" ,"); 
-    Serial.print(humidity);
+    Serial.print(humidity);//humidty
     Serial.print(" , ");
-    Serial.print(peepVal);
+    Serial.print(peepVal);//peep value
     Serial.print(" , ");
-    Serial.print(pressVal);
+    Serial.print(pressVal);//pressure value
+    Serial.print(" , ");
+    Serial.print(volFlow);//flow rate
+    Serial.print(" , ");
+    Serial.print(volume);//tidal volume
     Serial.print("\n");
   }
 }
@@ -476,74 +459,45 @@ void printMessage() {
 void loop(){
   
  modeSelect();
- bme280Result();
+ bmp280Read();
+ flowRate();
  pressureControl();
  peepControl();
  breathCount();
  alarm();
+ lcdDisplay();
  printMessage();
-
- 
- flasher.Update(inspTime,2*inspTime);
- flasher1.Update(2*inspTime,inspTime);
-
  
  minPos = peepVal;
  maxPos = pressVal;
+ 
  int difPos = maxPos - minPos;
- if(maxPos-minPos == 0){//to safe unnecessary stop of motor
+ 
+ if(maxPos-minPos == 0){ //to safe unnecessary stop of motor
    difPos= 85;
  }
  inspSpeed = inspTime/(maxPos-minPos);
- if( inspSpeed == 0){//to safe unnecessary stop of servo
+ if( inspSpeed == 0){  //to safe unnecessary stop of servo
   inspSpeed = 3000/(maxPos-minPos);
  }
-
 
  if(modeState == 0)
  {
   if(peepVal == 5){
     sweeper.update(5,maxPos,int(inspSpeed));
-  }
+    }
+  
   if(peepVal == 10){
     sweeper.update(10,maxPos,int(inspSpeed));
-  }
+    }
+  
   if(peepVal == 15){
     sweeper.update(15,maxPos,int(inspSpeed));
-  }
+    }
     
  }
  if(modeState == 1)
- {
-  patientControlMode();
- }
- //sprintf(data,"\n%d,%d,%d,%d,%d,%d,%d,%d,%d\n",modeState,alarmState,breathNo,inspTime,temperature,pressure,humidity);
- //Serial.write(data);
-
- // Serial.write(45); // send a byte with the value 45
-
- // int bytesSent = Serial.write(data);
- 
-/*
- Serial.print(modeState);
- Serial.print(" , "); 
- Serial.print(alarmState); 
- Serial.print(" , "); 
- Serial.print(breathNo); 
- Serial.print(" , "); 
- Serial.print(inspTime); 
- Serial.print(" , "); 
- Serial.print(temperature); 
- Serial.print(" , "); 
- Serial.print(pressure); 
- Serial.print(" ,"); 
- Serial.print(humidity);
- Serial.print(" , ");
- Serial.print(peepVal);
- Serial.print(" , ");
- Serial.print(pressVal);
- Serial.println("");
- delay(10);*/
- 
- 
+   {
+    patientControlMode();
+   }
 }

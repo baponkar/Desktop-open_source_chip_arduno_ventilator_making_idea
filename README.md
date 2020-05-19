@@ -3,16 +3,24 @@
 ## <p style='color:green'>Arduino-Ventilator Electtronic Configaration</p>
 ### <p style = 'color:magenta'> Required  electronic components :</p>
 
-- [x] Arduino UNO R3.(1 Pice)
-- [x] BME-280 Pressure Sensor Module.(3 Pieces)
-- [x] 10K Potentiometer (3 Pieces)
-- [x] Arduino Uno Sensor Shield.(1 Pice)
-- [x] High Torqe Servo Motor.(1 Pice,May be MG-996 Servo work!)
-- [x] Buzzer.(1 Piece)
-- [x] Swipe Button. (1 Pice)
+
+- [x] High torqe servo(MG-996 metal geared) -  1pc
+- [x] BME280 pressure Sensor -  3pcs
+- [x] buzzer - 1pcs
+- [x] Potentiometer(10K)(breath,peep,press,LCD Brightness Control) - 5 pcs
+- [x] Potentiometer Knob - 3pcs
+- [x] Swipe Button - 1pc
 - [x] Jumping Wires.
-- [x] Power Source.(One for Servo and other for Arduino)
-- [x] Computer.
+- [x] SResistor(560 Ohoms, 100 Ohom).
+- [x] 16X4 LCD Display - 1pc.
+- [x] Sensor shield v-5 - 1pc.
+- [x] Servo Bracket -1pc.
+- [x] Arduino UNO R3 - 1pc.
+- [x] Actuator -1pc.
+- [x] Ambu Bag - 1pc.
+- [x] Breathing Circuit.
+- [x] computer
+- [x] Power source - 2 pcs [9v for arduino 6 volt for servo]
 
  * The Basic Hardware configaration : ![GitHub Logp](hardware_setup.jpg)
 
@@ -94,11 +102,27 @@
   * I am working on this :
   * <p style ='color:red'> The two BME-280 sensor measuring air flow rate and supplied tidal volume and showing on desktop application.</p>
 
-3. I attached a Buzzer .It will make sound if there arise any kind alarming situation like,low or very  high pressure,low or very temperation,low or very high humidity,motor stopage etc.
+3. I attached a Buzzer .It will make sound if there arise any kind alarming situation like,low or very  high pressure,low or very temperatior,low or very high humidity,motor stopage etc.
 * I get this serial output from arduino Serial which is using as  serial input of processing code :
 ![GitHub Logp](arduino_serial.gif)
+
+
+* <p style='color:red'>The first value is modeState</p>
+* <p style='color:red'>Second value is alarm State </p>
+* <p style='color:red'>Third Value is breath no</p>
+* <p style='color:red'>fourth value is Inspiratory time</p>
+* <p style='color:red'>fifth value is temperature</p>
+* <p style='color:red'>sixth value is pressure</p>
+* <p style='color:red'>seventh value is humidity</p>
+* <p style='color:red'>Eigth value is Peep</p>
+* <p style='color:red'>Nineth value is maximum pressure value</p>
+* <p style='color:red'>Tenth value is flow rate volume </p>
+* <p style='color:red'>eleventh value is tidal volume</p>
+
 4. Let's talk about desktop application.It is showing real time pressure,air flow rate and tidal volume data logging with graph.It is also showing some other imporatant serial data which is obtained from Arduino like breathing no,inspiration time,expiration time,temperature,humidity,runnig time etc.
- ![GitHub Logo](desktop_app.gif)<p style='color:red'>
+ ![GitHub Logo](desktop_app.gif)
+
+ * <p style='color:red'>
 Desktop output ,Here I did not attached any sensor altough output showing some graph as I included some random value inside of Processing code to showing.</p>
 
 
