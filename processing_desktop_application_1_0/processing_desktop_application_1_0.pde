@@ -9,9 +9,10 @@
 *
 *Java Version - 11.0.6
 *Processing Version -3.5.4
-*Version - 4.0.0
+*Version - 5.0.0
 *Writer : Bapon Kar
-*Last Updated : 07/05/2020 @6:23 PM
+Contact : baponkar600@gmail.com
+*Last Updated : 18/05/2020 @10:16 PM
 */
 
 
@@ -70,6 +71,7 @@ void setup(){
   frameRate(15);//4 cycle in a minute
   
   //creating port
+  //You may change the portName as your device wise if this script not works
   String portName = Serial.list()[0];//the first active open port
   myPort = new Serial(this,portName,115200);
   
@@ -155,12 +157,7 @@ void draw(){
   pressure = random(0,40);
   flowRate = random (50,150);
   tidalVolume = random(0,10);*/
-  
-  
-  
-  
-  
-  
+   
   //pressure = random(0,40);//creating pressure value in between 0 and 40
   //flowRate = random(50,150);//creating flowrate random value
   //tidalVolume = random(0,10);//creating tidal Volume random value
@@ -246,20 +243,20 @@ void dataDraw(){
    }
   
   //Due to absence of serial Data I am using this values
-  pressureData[time] = random(40,40+ph);
- // pressureData[time] = map(pressure,0,40,40+ph,40);
+ // pressureData[time] = random(40,40+ph);  //For testing display in absence of serial Data
+  pressureData[time] = map(pressure,0,40,40+ph,40);
   
-  flowData[time] = random(ph+130,2*ph+130);
-  //flowData[time] = map(flowRate,50,150,2*ph+85,ph+130);
+  //flowData[time] = random(ph+130,2*ph+130);  //For testing display in absence of serial Data
+  flowData[time] = map(flowRate,50,150,2*ph+85,ph+130); 
   
-  tidalVolumeData[time] = random(ph+350,2*ph+350); //The above three showing graph and values
-  //tidalVolumeData[time] = map(tidalVolume,0,10,2*ph+350,ph+350);
+  //tidalVolumeData[time] = random(ph+350,2*ph+350);   //For testing display in absence of serial Data
+  tidalVolumeData[time] = map(tidalVolume,0,10,2*ph+350,ph+350);
   
   //The following values printing only
- // temperatureData[time] = random(15,45);//for testing purpose
+ // temperatureData[time] = random(15,45);//for testing purpose   //For testing display in absence of serial Data
   temperatureData[time] = temperature;
   
-  //humidityData[time] = random(0,100);//for testing purpose
+  //humidityData[time] = random(0,100);  //For testing display in absence of serial Data
    humidityData[time] = humidity;
   
   //peepData[time] = random(0,15);//for testing purpose
@@ -291,8 +288,5 @@ void dataDraw(){
   strokeJoin(ROUND);
   line(x-pw/59,pressureData[time1],x,pressureData[time]);//For drawing pressure graph
   line(x-pw/59,flowData[time1],x,flowData[time]);//For drawing Volume rate
-  line(x-pw/59,tidalVolumeData[time1],x,tidalVolumeData[time]);//For drawing tidal volume
-  
-  
- 
+  line(x-pw/59,tidalVolumeData[time1],x,tidalVolumeData[time]);//For drawing tidal volume 
 }
