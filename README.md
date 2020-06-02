@@ -29,10 +29,13 @@
  * <p style = 'color:green'>  To see details circuit diagram ,look arduino_code_version-1.0.ino file</p>
 
 
+<<<<<<< HEAD
 ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)<p style='color:red'>The important message : I did not have  all items as my country is in Lockdown.So I am unable to test all the staff.If you are interested to make this then you need to your own experiment and conclusion .You may find out multiple numbers of bug in this project.I don't know.</p>
 
 
 
+=======
+>>>>>>> ee6eb521a00fed9d51fa2e951a33715bff94f918
 
 ## <p style = 'color:red'>1. Why did I make this?</p>
  ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) We all know world is going through a pandemic situation due to COVID-19.This Corona virus mainly attacking on lungs and making Pnumenia of the patient. So maximum time patient need a ventilaton support .We all know that our system have only limited number ventilator in every country.This virus transmitting very fast and getting infected more and more persion in each day.The original medical ventilator has very important and complex property and it's building time and price both are high.So we need a fast and easy  building machine which also be chip from this idea we need a chip ventilator.It may help if there has no other option.I will recomend not to use in normal situation it should use in extreem situation.
