@@ -1,9 +1,10 @@
-# <p style='color:blue'> OPEN SOURCE CHIP "VENTILATOR" CIRCUIT IDEA & CIRCUIT AND CODES</p>
+![GitHub Logp](chip_open_source_arduino_based_ventilator_logo.jpg)
+### <p style='color:blue'> OPEN SOURCE CHIP "VENTILATOR" CIRCUIT IDEA & CIRCUIT AND CODES</p>
 
-## <p style='color:green'>Arduino-Ventilator Electtronic Configaration</p>
+## <p style='color:green'>Arduino-Ventilator Electronic Configaration</p>
 ### <p style = 'color:magenta'> Required  electronic components :</p>
 
-
+[![IMAGE ALT TEXT HERE ](/home/uniteworld/Downloads/Screenshot(8).png)](https://www.youtube.com/watch?v=A6c_zpoSJIw)
 - [x] High torqe servo(MG-996 metal geared) -  1pc
 - [x] BMP280 pressure Sensor -  3pcs
 - [x] buzzer - 1pcs
@@ -22,7 +23,10 @@
 - [x] computer
 - [x] Power source - 2 pcs [9v for arduino 6 volt for servo]
 
+ * The Electronic-Circuit Diagram ![GitHub Logp](circuit_diagram.jpg)
+
  * The Basic Hardware configaration : ![GitHub Logp](hardware_setup.jpg)
+ * <p style = 'color:green'>  To see details circuit diagram ,look arduino_code_version-1.0.ino file</p>
 
 
 ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)<p style='color:red'>The important message : I did not have  all items as my country is in Lockdown.So I am unable to test all the staff.If you are interested to make this then you need to your own experiment and conclusion .You may find out multiple numbers of bug in this project.I don't know.</p>
@@ -37,21 +41,16 @@
 
  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) The basic idea of the ambu bag compress VENTILATOR is to controlled compress and release of [Ambu Bag](https://images.app.goo.gl/5exEBuaQRQ4HmXZ7A).So we need a control run of a servo motor what vexactly will do this project.
 
-
-
-
- ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) This is not the all !  It has two mode(PC-CMV or pressure Control Mode) and (CSV-PS or Patient Controlled Mode).Which could be control by a swipe switch.
+ ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) This is not the all !  It has two mode(PC-CMV or pressure Control Mode) and (CSV-PS or Patient Controlled Mode).Which could be control by a swipe switch.Here I take expiratory time as two times of inspiratory time.
 1.  * CSV-PS : We can select this mode by placing mode switch at "0".Now we need to slect number of breath per minute by breathing Pot.Now select the minimum pressure selecting by peep pot and select the maximum pressure by pressure pot.Now motor give equal number of forward and backward rotation  which is equal to breathing number per minute.
 
-  * Another BME-280 sensor record pressure,temperature and humidity  and showing on Desktop app.
-  * I am working on this :
-  * <p style ='color:red'> The two BME-280 sensor measuring air flow rate and supplied tidal volume and showing on desktop application.</p>
+  * Another BME-280 sensor record pressure,temperature and humidity  and showing on Desktop app
+  * <p style ='color:red'> The two BMP-280 sensor measuring air flow rate and supplied tidal volume by spirometry principle and showing intime data as well as graph on desktop application.</p>
 
 2.  * PC-CMV : We can select this mode by placing mode switch on "1".In this mode we can't select breathing number manually.Actual Idea of this mode is The motor run forward when patient need a inspiration and run backward when patient need to expiration.
 
   * Another BME-280 sensor record pressure,temperature and humidity  and showing on Desktop app.
-  * I am working on this :
-  * <p style ='color:red'> The two BME-280 sensor measuring air flow rate and supplied tidal volume and showing on desktop application.</p>
+  * <p style ='color:red'> The two BME-280 sensor measuring air flow rate and supplied tidal volume by spirometry principle and showing intime data as ell as graph on desktop application.</p>
 
 3. I attached a Buzzer .It will make sound if there arise any kind alarming situation like,low or very  high pressure,low or very temperatior,low or very high humidity,motor stopage etc.
 * I get this serial output from arduino Serial which is using as  serial input of processing code :

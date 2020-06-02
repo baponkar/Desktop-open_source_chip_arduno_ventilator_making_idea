@@ -23,7 +23,7 @@ Serial myPort;
 byte [] inBuffer = new byte[7];
 String myString;
 String [] list;
-String [] serialData = new String[10];
+String [] serialData = new String[12];
 
 
 Graph graph1;
@@ -42,6 +42,8 @@ float [] temperatureData = new float[60];
 float [] humidityData = new float[60];
 float [] peepData = new float[60];
 float [] maxPressureData = new float[60];
+float [] flowRateData = new float [60];
+
 
 
 float pressure = 0,flowRate = 0,tidalVolume = 0,temperature,humidity,inspTime,maxPressure;
@@ -73,6 +75,7 @@ void setup(){
   //creating port
   //You may change the portName as your device wise if this script not works
   String portName = Serial.list()[0];//the first active open port
+  print(portName);
   myPort = new Serial(this,portName,115200);
   
   for(int i=0;i<60;i++){//initialise to zero of all serial array
@@ -83,18 +86,20 @@ void setup(){
    humidityData[i] = 0;
    peepData[i] = 0;
    maxPressureData[i] = 0;
+   flowRateData[i] = 0;
+   tidalVolumeData[i] = 0;
   }
   
-   for (int i =0;i<10;i++){
+   for (int i =0;i<12;i++){
       serialData[i] =str( 0);
     }
     
     
   font = createFont(PFont.list()[50],10);//Creating a font label
   
-  graph1 = new Graph(60,40,pw,ph,40,10,color(155,0,0),0,400,40,0);//making first graph page for pressure showing
-  graph2 = new Graph(60,ph+130,pw,ph,40,10,color(17,15,89),0,400,150,50);//making second graph page for flow rate showing
-  graph3 = new Graph(60,ph+350,pw,ph,40,10,color(78,55,9),0,400,10,0);//making third graph page for tidal volume showing
+  graph1 = new Graph(60,40,pw,ph,40,10,color(155,0,0),0,6,40,0);//making first graph page for pressure showing
+  graph2 = new Graph(60,ph+130,pw,ph,40,10,color(17,150,89),0,6,150,0);//making second graph page for flow rate showing
+  graph3 = new Graph(60,ph+350,pw,ph,40,10,color(78,55,9),0,6,500,-500);//making third graph page for tidal volume showing
   background(0);
 }
 
@@ -133,14 +138,14 @@ void draw(){
       delay(10);
   }
   
-  if(list.length == 10){
-    for (int i =0;i<10;i++){
+  if(list.length == 12){
+    for (int i =0;i<12;i++){
       serialData[i] = list[i];
       // println(i,":",serialData[i]);
     }
   }
-  
-  if(list.length == 10){
+  //println("length:",list.length);
+  if(list.length == 12){
    modeState = int(trim(serialData[1]));
    alarmState = int(trim(serialData[2]));
    breathingNo = int(trim(list[3]));
@@ -150,7 +155,8 @@ void draw(){
    humidity = float(trim(serialData[7]));
    peep = int(trim(serialData[8]));
    maxPressure = float(trim(serialData[9]));
-   println(int(trim(list[3])));
+   flowRate = float(trim(serialData[10]));
+   tidalVolume = float(trim(serialData[11]));
   }
   
   /*//For testing purpose
@@ -163,9 +169,9 @@ void draw(){
   //tidalVolume = random(0,10);//creating tidal Volume random value
   //breathingNo = int(random(12,28)); //Creating breathing no random values
   
-  graph1.display("Time in mS","Pressure in cm H\u2082O");//Making x and y label of pressure graph
-  graph2.display("Time in mS","Volume Rate in Litre/minute");//Making x and y label of flow rate graph
-  graph3.display("Time in mS","Tidal Volume in mL/Kg");//Making x and y label of tidal volume graph
+  graph1.display("Time in S","Pressure in cm H\u2082O");//Making x and y label of pressure graph
+  graph2.display("Time in S","Flow Rate in L/minute");//Making x and y label of flow rate graph
+  graph3.display("Time in S","Tidal Volume in mL");//Making x and y label of tidal volume graph
  
   
   dataDraw();
@@ -197,10 +203,11 @@ void valueShow(){
   fill(255);
   text("Pressure: " + nf(pressure,2,3)+"  cm H\u2082O",60+pw+170,60);
   text("Flow Rate: " + nf(flowRate,2,3)+" L/minute",60+pw+170,ph+130+30);
-  text("Tidal Volume: " + nf(tidalVolume,2,3)+" mL/Kg",60+pw+170,ph+350+30);
+  text("Tidal Volume: " + nf(tidalVolume,2,3)+" mL",60+pw+170,ph+350+30);
+ // println("FlowRate:",flowRate);
   
   
-  text("Temperature  : "+nf(temperature,2,3)+" C",60+pw+170,ph+360+60);
+  text("Temperature  : "+nf(temperature,2,3)+" \u00B0 C",60+pw+170,ph+360+60);
   text("Humidity : "+nf(humidity,2,3)+" %",60+pw+170,ph+360+90);
   text("PEEP : "+nf(peep,2) + "  cm H\u2082O",60+pw+170,ph+360+120);
   text("Max Pressure : "+nf(maxPressure,2,0) + "  cm H\u2082O",60+pw+170,ph+360+140);
@@ -213,12 +220,12 @@ void valueShow(){
   text("Mode State :"+"PC-CMV",540,22);
   
   }
-  else if(modeState == 1){
+  if(modeState == 1){
     text("Mode State :" + "CSV-PS",540,22);
   }
   
-  textSize(40);
-  text(breathingNo,w+100,3*ph);
+  textSize(45);
+  text(breathingNo,w+100,3*ph+5);
   textSize(20);
   text("Breathing No per minute",w-100,3*ph);
   
@@ -250,7 +257,7 @@ void dataDraw(){
   flowData[time] = map(flowRate,50,150,2*ph+85,ph+130); 
   
   //tidalVolumeData[time] = random(ph+350,2*ph+350);   //For testing display in absence of serial Data
-  tidalVolumeData[time] = map(tidalVolume,0,10,2*ph+350,ph+350);
+  tidalVolumeData[time] = map(tidalVolume,-500,500,2*ph+350,ph+350);
   
   //The following values printing only
  // temperatureData[time] = random(15,45);//for testing purpose   //For testing display in absence of serial Data
