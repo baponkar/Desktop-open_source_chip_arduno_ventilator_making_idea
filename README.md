@@ -4,7 +4,7 @@
 ## <p style='color:green'>Arduino-Ventilator Electronic Configaration</p>
 ### <p style = 'color:magenta'> Required  electronic components :</p>
 
-[![IMAGE ALT TEXT HERE ](/home/uniteworld/Downloads/Screenshot(8).png)](https://www.youtube.com/watch?v=A6c_zpoSJIw)
+[![YouTube link of the model](Screenshot(8).png)](https://youtube.com/shorts/q5ffG1QvJbI?feature=share)
 - [x] High torqe servo(MG-996 metal geared) -  1pc
 - [x] BMP280 pressure Sensor -  3pcs
 - [x] buzzer - 1pcs
